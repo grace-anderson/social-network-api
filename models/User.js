@@ -16,9 +16,9 @@ const userSchema = new Schema(
       //Must match a valid email address (look into Mongoose's matching validation)
     },
     //thoughts - Array of _id values referencing the Thought model
-    thoughts: [thoughtSchema],
+    // thoughts: [thoughtSchema],
     //friends - Array of _id values referencing the User model (self-reference)
-    friends: [userSchema], //self-reference?
+    // friends: [userSchema], //self-reference?
   }
   //Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
 );
