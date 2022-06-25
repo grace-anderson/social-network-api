@@ -76,7 +76,9 @@ module.exports = {
       { $pull: { friends: params.friendId } }
     )
       .then((friendData) =>
-        res.status(200).json(user204Message(params.friendId, "User"))
+        !friendData
+        ? res.status(404).json({ message: "No user with that ID" })
+        : res.json({ message: "User deleted" })
       )
       .catch((err) => res.json(err));
   },
