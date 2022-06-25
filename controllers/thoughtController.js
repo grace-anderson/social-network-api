@@ -1,6 +1,31 @@
 const { Thought, User } = require("../models");
 
 module.exports = {
+
+ // create a thought
+ createThought({ body }, res) {
+  console.log("thought body", body);
+  Thought.create({ thoughtText: body.thoughtText, username: body.username })
+    .then(({ _id }) => {
+      return User.findOneAndUpdate(
+        { username: body.username },
+        { $push: { thoughts: _id } },
+        { new: true }
+      );
+    })
+    .then((thought) =>
+      !thought
+        ? res.status(404).json({
+            message: "Thought created, but no user found with that ID",
+          })
+        : res.json("Thought created 🎉")
+    )
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+},
+
   // Get all thoughts
   getThoughts(req, res) {
     Thought.find()
@@ -9,27 +34,16 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // create a thought
-  createThought({ body }, res) {
-    console.log("thought body", body);
-    Thought.create({ thoughtText: body.thoughtText, username: body.username })
-      .then(({ _id }) => {
-        return User.findOneAndUpdate(
-          { username: body.username },
-          { $push: { thoughts: _id } },
-          { new: true }
-        );
-      })
+  // Get a single thought
+  getSingleThought(req, res) {
+    Thought.findOne({ _id: req.params.thoughtId })
+      .select("-__v")
       .then((thought) =>
         !thought
-          ? res.status(404).json({
-              message: "Thought created, but found no user with that ID",
-            })
-          : res.json("Thought created 🎉")
+          ? res.status(404).json({ message: "No thought with that ID" })
+          : res.json(thought)
       )
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json(err);
-      });
-  },
+      .catch((err) => res.status(500).json(err));
+  }
+ 
 };
