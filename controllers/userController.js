@@ -7,7 +7,7 @@ module.exports = {
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
-  //add runValidators: true to createUser?
+  //TODO - add runValidators: true when creating user createUser?
 
   // Get all users
   getUsers(req, res) {
@@ -40,6 +40,20 @@ module.exports = {
           ? res.status(404).json({ message: "No user with that ID" })
           : res.json(user)
       )
+      .catch((err) => res.status(500).json(err));
+  },
+
+  //Delete a user
+  //TODO - add friends, thoughts to delete
+  deleteUser(req, res) {
+    User.findOneAndDelete({ _id: req.params.userId })
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No user with that ID" })
+          // : res.json(user)
+          : res.json({ message: "User deleted" })
+      )
+      .then(() => res.json({ message: "User deleted!" }))
       .catch((err) => res.status(500).json(err));
   },
 };
