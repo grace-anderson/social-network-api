@@ -4,16 +4,18 @@ module.exports = {
   // Get all thoughts
   getThoughts(req, res) {
     Thought.find()
-      .then((thoughts) => res.json(users))
+      .select("-__v")
+      .then((thoughts) => res.json(thoughts))
       .catch((err) => res.status(500).json(err));
   },
 
   // create a thought
   createThought({ body }, res) {
+    console.log("thought body", body);
     Thought.create({ thoughtText: body.thoughtText, username: body.username })
       .then(({ _id }) => {
         return User.findOneAndUpdate(
-          { _id: body.userId },
+          { username: body.username },
           { $push: { thoughts: _id } },
           { new: true }
         );

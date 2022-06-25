@@ -8,13 +8,11 @@ const {
 // /api/thoughts
 
 // GET to get all thoughts
-router.route("/").get(getThoughts)
-
-// GET to get a single thought by its _id
-
 // POST to create a new thought
 // (don't forget to push the created thought's _id to the associated user's thoughts array field)
-router.route("/").post(createThought);
+router.route("/").get(getThoughts).post(createThought);
+
+// GET to get a single thought by its _id
 
 // // example data
 // {
@@ -26,7 +24,6 @@ router.route("/").post(createThought);
   
 //   DELETE to remove a thought by its _id
   
-
 //REACTIONS
 //   /api/thoughts/:thoughtId/reactions
   
