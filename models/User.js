@@ -16,7 +16,12 @@ const userSchema = new Schema(
       //Must match a valid email address (look into Mongoose's matching validation)
     },
     //thoughts - Array of _id values referencing the Thought model
-    // thoughts: [thoughtSchema],
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Thought',
+      },
+    ],
     //friends - Array of _id values referencing the User model (self-reference)
     // friends: [userSchema], //self-reference?
   }

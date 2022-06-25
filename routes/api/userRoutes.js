@@ -8,7 +8,7 @@ const {
 } = require("../../controllers/userController");
 
 // GET all users
-// POST a new user:
+// POST to create a new user:
 // /api/users
 router.route("/").get(getUsers).post(createUser);
 
