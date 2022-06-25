@@ -7,12 +7,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      //"Trimmed"?
+      trim: true
     },
     email: {
       type: String,
       required: true,
-      //"Unique"?
+      unique: true,
       //Must match a valid email address (look into Mongoose's matching validation)
     },
     //thoughts - Array of _id values referencing the Thought model
