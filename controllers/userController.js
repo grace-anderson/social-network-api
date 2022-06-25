@@ -1,4 +1,4 @@
-const { User, Thoughts } = require("../models");
+const { User, Thought } = require("../models");
 
 module.exports = {
   // create a new user
@@ -12,6 +12,8 @@ module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
+      .populate({ path: 'friends', select: '-__v'})
+      .select("-__v")
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
@@ -19,6 +21,7 @@ module.exports = {
   //Get a single user
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
+      .populate({ path: 'friends', select: '-__v' })
       .select("-__v")
       .then((user) =>
         !user
@@ -53,5 +56,28 @@ module.exports = {
           : res.json({ message: "User deleted" })
       )
       .catch((err) => res.status(500).json(err));
+  },
+
+  // add friend to user
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $push: { friends: params.friendId } },
+      { new: true, runValidators: true }
+    )
+      .then((friendData) => res.json(friendData))
+      .catch((err) => res.status(400).json(err));
+  },
+
+  //delete friend from user
+  removeFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.userId },
+      { $pull: { friends: params.friendId } }
+    )
+      .then((friendData) =>
+        res.status(200).json(user204Message(params.friendId, "User"))
+      )
+      .catch((err) => res.json(err));
   },
 };

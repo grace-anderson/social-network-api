@@ -1,28 +1,33 @@
-const { Thought } = require("../models");
+const { Thought, User } = require("../models");
 
 module.exports = {
-    // create a new thought
-    createThought(req, res) {
-        Thought.create(req.body)
-          .then((thought) => {
-            return User.findOneAndUpdate(
-              { _id: req.body.userId },
-              { $addToSet: { thoughts: thought._id } },
-              { new: true }
-            );
-          })
-          .then((user) =>
-            !user
-              ? res.status(404).json({
-                  message: 'Thought created, but found no user with that ID',
-                })
-              : res.json('Created the thought 🎉')
-          )
-          .catch((err) => {
-            console.log(err);
-            res.status(500).json(err);
-          });
-      },
-}
+  // Get all thoughts
+  getThoughts(req, res) {
+    Thought.find()
+      .then((thoughts) => res.json(users))
+      .catch((err) => res.status(500).json(err));
+  },
 
-
+  // create a thought
+  createThought({ body }, res) {
+    Thought.create({ thoughtText: body.thoughtText, username: body.username })
+      .then(({ _id }) => {
+        return User.findOneAndUpdate(
+          { _id: body.userId },
+          { $push: { thoughts: _id } },
+          { new: true }
+        );
+      })
+      .then((thought) =>
+        !thought
+          ? res.status(404).json({
+              message: "Thought created, but found no user with that ID",
+            })
+          : res.json("Thought created 🎉")
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
+};

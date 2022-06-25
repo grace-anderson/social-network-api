@@ -1,12 +1,14 @@
 const router = require("express").Router();
 
 const {
-    createThought
+    createThought,
+    getThoughts
   } = require("../../controllers/thoughtController");
 
 // /api/thoughts
 
 // GET to get all thoughts
+router.route("/").get(getThoughts)
 
 // GET to get a single thought by its _id
 
