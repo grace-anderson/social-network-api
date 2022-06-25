@@ -7,6 +7,7 @@ module.exports = {
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
+  //add runValidators: true to createUser?
 
   // Get all users
   getUsers(req, res) {
@@ -28,10 +29,12 @@ module.exports = {
   },
 
   // Update a single user
-  // db.groceryCollection.updateOne({"item": "banana"}, {$set: { "item" : "apple"}});
   updateSingleUser(req, res) {
-    User.findOneAndUpdate({ id: req.params.userId }, { new: true })
-      .select("-__v")
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $set: req.body },
+      { runValidators: true, new: true }
+    )
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
