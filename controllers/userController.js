@@ -1,10 +1,16 @@
 const { User, Thought } = require("../models");
 
 module.exports = {
-  // create a new user
+  // Create a new user
   createUser(req, res) {
     User.create(req.body)
-      .then((user) => res.json(user))
+      .then((user) =>
+        !user
+          ? res.status(404).json({
+              message: "Uh oh! Something went wrong. User not created",
+            })
+          : res.json("User created 🎉")
+      )
       .catch((err) => res.status(500).json(err));
   },
 
@@ -64,7 +70,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // add a friend to user
+  // Add a friend to user
   addFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
@@ -75,7 +81,7 @@ module.exports = {
       .catch((err) => res.status(400).json(err));
   },
 
-  //delete a friend from user
+  //Remove a friend from user
   removeFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },

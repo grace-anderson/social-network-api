@@ -12,24 +12,25 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: true,
+      //email validation
       match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       unique: true,
     },
-    //user's thoughts 
+    //user's thoughts
     thoughts: [
       {
         type: Schema.Types.ObjectId,
         ref: "Thought",
       },
     ],
-    //users' friends 
+    //users' friends
     friends: [
       {
-          type: Schema.Types.ObjectId,
-          ref: 'User'
-      }
-  ]
-},
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
   {
     toJSON: {
       virtuals: true,
@@ -39,8 +40,8 @@ const userSchema = new Schema(
 );
 
 //friendCount that retrieves the number of user's friends (using the length of the user's friends array field on query)
-userSchema.virtual('friendCount').get(function() {
-  return this.friends.length
+userSchema.virtual("friendCount").get(function () {
+  return this.friends.length;
 });
 
 const User = model("User", userSchema);

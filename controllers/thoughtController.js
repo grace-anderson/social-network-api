@@ -1,7 +1,7 @@
 const { Thought, User } = require("../models");
 
 module.exports = {
-  // create a thought
+  // Create a thought
   createThought({ body }, res) {
     Thought.create({ thoughtText: body.thoughtText, username: body.username })
       .then(({ _id }) => {
@@ -69,26 +69,31 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // add a reaction to thought
-
-  createReaction({ params, body }, res) {
+  // Add a reaction to thought
+  addReaction({ params, body }, res) {
     Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       {
         $push: {
           reactions: {
-            reactionBody: body.reactionBody,
+            reactionText: body.reactionText,
             username: body.username,
           },
         },
       },
       { new: true, runValidators: true }
     )
-      .then((reactionData) => res.json(reactionData))
+      .then((reactionData) =>
+        !reactionData
+          ? res
+              .status(404)
+              .json({ message: "Reaction added, but no thought with that id" })
+          : res.json({ message: "Reaction added 🎉" })
+      )
       .catch((err) => res.status(400).json(err));
   },
 
-  //remove a reaction from thought
+  //Remove a reaction from a thought
   removeReaction({ params }, res) {
     Thought.findOneAndUpdate(
       { _id: params.thoughtId },
