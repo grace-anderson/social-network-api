@@ -7,7 +7,9 @@ module.exports = {
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
-  //TODO - add runValidators: true when creating user createUser
+
+  //TODO email validation
+
 
   // Get all users
   getUsers(req, res) {

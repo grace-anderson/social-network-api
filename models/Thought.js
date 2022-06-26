@@ -22,7 +22,7 @@ const reactionSchema = new Schema(
       //use a JavaScript date library of your choice or the native JavaScript Date object to format timestamp
       type: Date,
       default: Date.now(),
-      //Use a getter method to format the timestamp on query
+      //TODO - Use a getter method to format the timestamp on query
     },
   },
   {
@@ -46,7 +46,7 @@ const thoughtSchema = new Schema(
       //use a JavaScript date library of your choice or the native JavaScript Date object to format timestamp
       type: Date,
       default: Date.now(),
-      //Use a getter method to format the timestamp on query
+         //TODO - Use a getter method to format the timestamp on query
     },
     username: {
       // The user that created this thought)

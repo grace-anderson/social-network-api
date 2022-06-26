@@ -18,7 +18,6 @@ router.route("/").get(getUsers).post(createUser);
 // TODO with populated thought and friend data
 // PUT to update a user by its _id
 // DELETE to remove user by its _id
-// TODO - BONUS: Remove a user's associated thoughts when deleted.
 // /api/users/:userId
 router
   .route("/:userId")
