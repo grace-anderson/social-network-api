@@ -4,10 +4,10 @@ const reactionSchema = new Schema(
   // Schema Settings:
   // This will not be a model, but rather will be used as the reaction field's subdocument schema in the Thought model.
   {
-    reactionId: {
-      type: Schema.Types.ObjectId,
-      default: () => new Types.ObjectId(),
-    },
+    // reactionId: {
+    //   type: Schema.Types.ObjectId,
+    //   default: () => new Types.ObjectId(),
+    // },
     reactionBody: {
       type: String,
       required: true,
@@ -27,7 +27,7 @@ const reactionSchema = new Schema(
   },
   {
     toJSON: {
-    //   virtuals: true,
+      //   virtuals: true,
       getters: true,
     },
     id: false,
@@ -73,8 +73,12 @@ const thoughtSchema = new Schema(
     },
     id: false,
   }
-  // TODO - Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
 );
+
+// Create a virtual called reactionCount that retrieves the length of the thought's reactions array field on query.
+thoughtSchema.virtual('reactionCount').get(function() {
+  return this.reactions.length;
+});
 
 const Thought = model("Thought", thoughtSchema);
 
