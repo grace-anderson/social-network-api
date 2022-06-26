@@ -60,7 +60,7 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  // add friend to user
+  // add a friend to user
   addFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
@@ -71,7 +71,7 @@ module.exports = {
       .catch((err) => res.status(400).json(err));
   },
 
-  //delete friend from user
+  //delete a friend from user
   removeFriend({ params }, res) {
     User.findOneAndUpdate(
       { _id: params.userId },
