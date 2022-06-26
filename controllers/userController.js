@@ -8,9 +8,6 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  //TODO email validation
-
-
   // Get all users
   getUsers(req, res) {
     User.find()
