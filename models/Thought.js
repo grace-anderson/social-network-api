@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const moment = require('moment');
 
 const reactionSchema = new Schema(
   // Schema Settings:
@@ -22,10 +23,13 @@ const reactionSchema = new Schema(
       //use a JavaScript date library of your choice or the native JavaScript Date object to format timestamp
       type: Date,
       default: Date.now(),
+      immutable: true,
+      get: (time) => moment(time).format('MMMM Do YYYY, h:mm:ss a')
       //TODO - Use a getter method to format the timestamp on query
     },
   },
   {
+    timestamps: { createdAt: true, updatedAt: false },
     toJSON: {
       //   virtuals: true,
       getters: true,
@@ -46,8 +50,16 @@ const thoughtSchema = new Schema(
       //use a JavaScript date library of your choice or the native JavaScript Date object to format timestamp
       type: Date,
       default: Date.now(),
-         //TODO - Use a getter method to format the timestamp on query
+      immutable: true,
+      get: (time) => moment(time).format('MMMM Do YYYY, h:mm:ss a')
+      //TODO - Use a getter method to format the timestamp on query
     },
+    // createdAt: {
+    //   //use a JavaScript date library of your choice or the native JavaScript Date object to format timestamp
+    //   type: Date,
+    //   default: Date.now(),
+    //   //TODO - Use a getter method to format the timestamp on query
+    // },
     username: {
       // The user that created this thought)
       type: String,
@@ -67,6 +79,7 @@ const thoughtSchema = new Schema(
     // Array of nested documents created with the reactionSchema
   },
   {
+    timestamps: { createdAt: true, updatedAt: false },
     toJSON: {
       virtuals: true,
       getters: true,
