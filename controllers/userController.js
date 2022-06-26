@@ -12,8 +12,8 @@ module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
-      .populate({ path: 'friends', select: '-__v'})
-      .populate({ path: 'thoughts', select: '-__v'})
+      .populate({ path: "friends", select: "-__v" })
+      .populate({ path: "thoughts", select: "-__v" })
       .select("-__v")
       .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
@@ -22,8 +22,8 @@ module.exports = {
   //Get a single user
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .populate({ path: 'friends', select: '-__v' })
-      .populate({ path: 'thoughts', select: '-__v' })
+      .populate({ path: "friends", select: "-__v" })
+      .populate({ path: "thoughts", select: "-__v" })
       .select("-__v")
       .then((user) =>
         !user
@@ -49,14 +49,19 @@ module.exports = {
   },
 
   //Delete a user
-  // TODO - BONUS: Remove a user's associated thoughts when deleted.
+  //Deleting a user removes a user's associated thoughts
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.userId })
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user with that ID" })
-          : res.json({ message: "User deleted" })
-      )
+      .then((user) => {
+        if (!user) {
+          return res.status(404).json({ message: "No user with that ID" });
+        }
+        Thought.deleteMany({ username: user.username }).then((deleteThoughts) =>
+          deleteThoughts
+            ? res.json({ message: "User deleted" })
+            : res.status(404).json({ message: "No user with that ID" })
+        );
+      })
       .catch((err) => res.status(500).json(err));
   },
 
@@ -79,8 +84,8 @@ module.exports = {
     )
       .then((friendData) =>
         !friendData
-        ? res.status(404).json({ message: "No user with that ID" })
-        : res.json({ message: "User deleted" })
+          ? res.status(404).json({ message: "No user with that ID" })
+          : res.json({ message: "User deleted" })
       )
       .catch((err) => res.json(err));
   },

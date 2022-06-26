@@ -3,7 +3,6 @@ const { Thought, User } = require("../models");
 module.exports = {
   // create a thought
   createThought({ body }, res) {
-    console.log("thought body", body);
     Thought.create({ thoughtText: body.thoughtText, username: body.username })
       .then(({ _id }) => {
         return User.findOneAndUpdate(
@@ -20,7 +19,6 @@ module.exports = {
           : res.json("Thought created 🎉")
       )
       .catch((err) => {
-        console.log(err);
         res.status(500).json(err);
       });
   },
