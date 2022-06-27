@@ -16,7 +16,7 @@ module.exports = {
           ? res.status(404).json({
               message: "Thought created, but no user found with that ID",
             })
-          : res.json("Thought created 🎉")
+          : res.json(`${thought.username}'s thought created 🎉`)
       )
       .catch((err) => {
         res.status(500).json(err);
@@ -35,7 +35,6 @@ module.exports = {
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
-      .lean()
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No thought with that ID" })
@@ -54,7 +53,7 @@ module.exports = {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No thought with that ID" })
-          : res.json(thought)
+          : res.json(`Thought updated to '${thought.thoughtText}'🎉`)
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -65,7 +64,7 @@ module.exports = {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: "No thought with that ID" })
-          : res.json({ message: "Thought deleted" })
+          : res.json(`Thought deleted`)
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -84,12 +83,16 @@ module.exports = {
       },
       { new: true, runValidators: true }
     )
-      .then((reactionData) =>
-        !reactionData
-          ? res
-              .status(404)
-              .json({ message: "Reaction added, but no thought with that id" })
-          : res.json({ message: "Reaction added 🎉" })
+      .then(
+        (reactionData) =>
+          !reactionData
+            ? res.status(404).json({
+                message: "Reaction added, but no thought with that id",
+              })
+            : res.json(
+                `Reaction '${body.reactionText}' added to thought '${reactionData.thoughtText}' 🎉`
+              )
+        // : res.json(reactionData)
       )
       .catch((err) => res.status(400).json(err));
   },
@@ -104,7 +107,7 @@ module.exports = {
       .then((reactionData) =>
         !reactionData
           ? res.status(404).json({ message: "No reaction with that ID" })
-          : res.json({ message: "Reaction deleted" })
+          : res.json(`Reaction deleted`)
       )
       .catch((err) => res.json(err));
   },

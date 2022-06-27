@@ -9,7 +9,7 @@ module.exports = {
           ? res.status(404).json({
               message: "Sorry, user not created",
             })
-          : res.json("User created 🎉")
+          : res.json(`User ${user.username} created 🎉`)
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -30,7 +30,6 @@ module.exports = {
       .populate({ path: "friends", select: "-__v" })
       .populate({ path: "thoughts", select: "-__v" })
       .select("-__v")
-      .lean()
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
@@ -49,7 +48,9 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
-          : res.json(user)
+          : res.json(
+              `User updated 🎉. Username: ${user.username}, Email: ${user.email}`
+            )
       )
       .catch((err) => res.status(500).json(err));
   },
@@ -64,7 +65,7 @@ module.exports = {
         }
         Thought.deleteMany({ username: user.username }).then((deleteThoughts) =>
           deleteThoughts
-            ? res.json({ message: "User deleted" })
+            ? res.json(`User ${user.username} deleted`)
             : res.status(404).json({ message: "No user with that ID" })
         );
       })
@@ -78,7 +79,11 @@ module.exports = {
       { $push: { friends: params.friendId } },
       { new: true, runValidators: true }
     )
-      .then((friendData) => res.json(friendData))
+      .then((friendData) =>
+        !friendData
+          ? res.status(404).json({ message: "Sorry, friend not added" })
+          : res.json(`Friend added to ${friendData.username}'s friend list 🎉`)
+      )
       .catch((err) => res.status(400).json(err));
   },
 
@@ -90,8 +95,8 @@ module.exports = {
     )
       .then((friendData) =>
         !friendData
-          ? res.status(404).json({ message: "No user with that ID" })
-          : res.json({ message: "User deleted" })
+          ? res.status(404).json({ message: "No friend with that ID" })
+          : res.json(`Friend removed`)
       )
       .catch((err) => res.json(err));
   },
