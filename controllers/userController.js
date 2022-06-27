@@ -7,7 +7,7 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({
-              message: "Uh oh! Something went wrong. User not created",
+              message: "Sorry, user not created",
             })
           : res.json("User created 🎉")
       )
@@ -15,13 +15,31 @@ module.exports = {
   },
 
   // Get all users
-  getUsers(req, res) {
-    User.find()
-      .populate({ path: "friends", select: "-__v" })
-      .populate({ path: "thoughts", select: "-__v" })
-      .select("-__v")
-      .then((users) => res.json(users))
-      .catch((err) => res.status(500).json(err));
+  // getUsers(req, res) {
+  //   User.find()
+  //     .populate({ path: "friends", select: "-__v" })
+  //     .populate({ path: "thoughts", select: "-__v" })
+  //     .select("-__v")
+  //     .then((users) => res.json(users))
+  //     .catch((err) => res.status(500).json(err));
+  // },
+
+  async getUsers(req, res) {
+    try {
+      const users = await User.find()
+        .populate({ path: "friends", select: "-__v" })
+        .populate({ path: "thoughts", select: "-__v" })
+        .select("-__v")
+        .lean();
+
+      const usersObj = {
+        users,
+      };
+      res.json(usersObj);
+    } catch (error) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
   },
 
   //Get a single user
