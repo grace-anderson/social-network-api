@@ -15,31 +15,13 @@ module.exports = {
   },
 
   // Get all users
-  // getUsers(req, res) {
-  //   User.find()
-  //     .populate({ path: "friends", select: "-__v" })
-  //     .populate({ path: "thoughts", select: "-__v" })
-  //     .select("-__v")
-  //     .then((users) => res.json(users))
-  //     .catch((err) => res.status(500).json(err));
-  // },
-
-  async getUsers(req, res) {
-    try {
-      const users = await User.find()
-        .populate({ path: "friends", select: "-__v" })
-        .populate({ path: "thoughts", select: "-__v" })
-        .select("-__v")
-        .lean();
-
-      const usersObj = {
-        users,
-      };
-      res.json(usersObj);
-    } catch (error) {
-      console.log(err);
-      return res.status(500).json(err);
-    }
+  getUsers(req, res) {
+    User.find()
+      .populate({ path: "friends", select: "-__v" })
+      .populate({ path: "thoughts", select: "-__v" })
+      .select("-__v")
+      .then((users) => res.json(users))
+      .catch((err) => res.status(500).json(err));
   },
 
   //Get a single user
@@ -48,6 +30,7 @@ module.exports = {
       .populate({ path: "friends", select: "-__v" })
       .populate({ path: "thoughts", select: "-__v" })
       .select("-__v")
+      .lean()
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No user with that ID" })
