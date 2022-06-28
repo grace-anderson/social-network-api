@@ -49,7 +49,7 @@ module.exports = {
         !user
           ? res.status(404).json({ message: "No user with that ID" })
           : res.json(
-              `User updated 🎉. Username: ${user.username}, Email: ${user.email}`
+              `User updated 🎉. Username: ${user.username}, email: ${user.email}`
             )
       )
       .catch((err) => res.status(500).json(err));
