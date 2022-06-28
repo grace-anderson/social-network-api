@@ -76,13 +76,15 @@ The **Social Network API** provides the following API routes to create, update a
 
 To install and run the **Social Network API** locally,
 * Download or clone the code from the [Social Network API github repo](https://github.com/grace-anderson/social-network-api)
+* Install [MongoDB](https://mongodb.com/)
+* Install [MongoDB Compass](https://www.mongodb.com/products/compass) (if you are using Windows) 
 * Open in your preferred terminal (e.g. [Visual Studio Code's](https://code.visualstudio.com/) integrated terminal)
-* Navigate to the specified folders in order and run the following command:
-  * In the root directory run :
+* Navigate to the specified folders in order and run the following commands:
+  * To install dependencies, in the root directory run :
   
       ```npm install```
 
-  * After installation, in the root directory, run:
+  * After installation, in the root directory, start the server by running:
   
       ```node index.js```
 
