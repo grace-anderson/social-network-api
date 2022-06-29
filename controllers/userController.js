@@ -79,10 +79,12 @@ module.exports = {
       { $push: { friends: params.friendId } },
       { new: true, runValidators: true }
     )
+      .populate({ path: "friends", select: "-__v" })
+      .select("-__v")
       .then((friendData) =>
         !friendData
           ? res.status(404).json({ message: "Sorry, friend not added" })
-          : res.json(`Friend added to ${friendData.username}'s friend list 🎉`)
+          : res.json(`${friendData.friends.slice(-1)[0].username} added to ${friendData.username}'s friend list 🎉`)
       )
       .catch((err) => res.status(400).json(err));
   },

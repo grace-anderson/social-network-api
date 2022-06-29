@@ -5,7 +5,7 @@
 
 The **Social Network API** is a social network application where users can be created, and users can share their thoughts, react to friends' thought, and create a friend list. 
 
-The application uses [Express.js](https://www.npmjs.com/package/express) for routing, a [MongoDB database](https://mongodb.com/) used with [Mongoose ODM](https://www.npmjs.com/package/mongoose), and [Moment](https://momentjs.com/)for formatting timestamps. Go to [GitHub](https://github.com/grace-anderson/social-network-api) for the **Social Network API** code. The app is not deployed, so must be downloaded and run locally.
+The application uses [Express.js](https://www.npmjs.com/package/express) for routing, a [MongoDB database](https://mongodb.com/) used with [Mongoose ODM](https://www.npmjs.com/package/mongoose), and [Moment](https://momentjs.com/) for formatting timestamps. Go to [GitHub](https://github.com/grace-anderson/social-network-api) for the **Social Network API** code. The app is not deployed, so must be downloaded and run locally.
 
 
 ## Table of Contents
